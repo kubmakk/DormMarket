@@ -1,7 +1,3 @@
-This is a comprehensive and professional `README.md` for your project. It covers the vision, features, monetization, and user roles in clear English, making it perfect for a GitHub portfolio.
-
----
-
 # 🏠 DormMarket (ОбщагаМаркет)
 
 **DormMarket** is a specialized peer-to-peer marketplace designed exclusively for students living in the **DAS Dormitory**. It serves as a unified ecosystem for buying, selling, renting, and providing services within the dorm community, helping students monetize their skills and belongings.
