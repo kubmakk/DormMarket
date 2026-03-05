@@ -12,8 +12,10 @@ protocol Coordinator{
     func start()
 }
 
+// Main Coordinator to be open App
 class MainCoordinator: Coordinator {
     var navigationController: UINavigationController
+    
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
