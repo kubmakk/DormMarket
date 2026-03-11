@@ -5,75 +5,50 @@
 //  Created by kubmakk on 18/2/26.
 //
 import UIKit
+import SnapKit
 
-class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let tableView = UITableView()
-    let posts = [
-            "Мой первый день в iOS разработке 🚀",
-            "Изучаю таблицы. Оказывается, это не так сложно!",
-            "Сегодня разобрался с tableHeaderView",
-            "Пишу свой собственный Instagram...",
-            "Пост номер 5",
-            "Пост номер 6",
-            "Пост номер 7 (чтобы таблица точно скроллилась)"
-    ]
+class ProfileViewController: UIViewController {
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Профиль"
+        label.font = UIFont.boldSystemFont(ofSize: 24)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let logoutButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Выйти", for: .normal)
+        button.backgroundColor = .systemRed
+        button.setTitleColor(.white, for: .normal)
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupUI()
+    }
+    
+    func setupUI() {
         view.backgroundColor = .white
-        title = "My profile"
-        setupTableView()
-        setupHeader()
-    }
-    
-    
-    private func setupTableView() {
-        view.addSubview(tableView)
-        tableView.frame = view.bounds
+        view.addSubview(titleLabel)
+        view.addSubview(logoutButton)
         
-        tableView.dataSource = self
-        tableView.delegate = self
-        
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-    }
-    
-    private func setupHeader(){
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
-        headerView.backgroundColor = .purple
-        
-        let avatarSize: CGFloat = 100
-        let avatarX = (view.frame.width - avatarSize) / 2
-        let avatarView = UIView(frame: CGRect(x: avatarX, y: 40, width: avatarSize, height: avatarSize))
-        avatarView.backgroundColor = .blue
-        avatarView.layer.cornerRadius = avatarSize / 2
-        headerView.addSubview(avatarView)
-        
-        let nameLabel = UILabel(frame: CGRect(x: 0, y: 150, width: view.frame.width, height: 30))
-        nameLabel.text = "Hi there"
-        nameLabel.textAlignment = .center
-        nameLabel.font = .boldSystemFont(ofSize: 24)
-        headerView.addSubview(nameLabel)
-        
-        tableView.tableHeaderView = headerView
-        
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return posts.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = posts[indexPath.row]
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        print("Пользователь нажал на ячейку \(posts[indexPath.row])")
-    }
+        titleLabel.snp.makeConstraints { (make) in
+            make.center.equalToSuperview()
+        }
+        logoutButton.snp.makeConstraints { (make) in
+            make.top.equalTo(titleLabel.snp.bottom).offset(30)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(100)
+            make.height.equalTo(50)
+        }
+        logoutButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
+    }
+        
+    @objc private func buttonTapped(){
+        print("Кнопка нажата")
+    }
 }
