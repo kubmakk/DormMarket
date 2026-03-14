@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 protocol Coordinator{
     var navigationController: UINavigationController { get set }
     func start()
@@ -27,6 +26,11 @@ class MainCoordinator: Coordinator {
     
     func showProfile(){
         let vc = ProfileViewController()
+        navigationController.pushViewController(vc, animated: true)
+    }
+    
+    func showLoginVC(){
+        let vc = LoginViewController()
         navigationController.pushViewController(vc, animated: true)
     }
 }

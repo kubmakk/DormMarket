@@ -7,23 +7,119 @@
 import UIKit
 import SnapKit
 
-class LoginViewController: ViewController{
+class LoginViewController: UIViewController {
     
-    private let buttonLogin: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 10
-        return button
+    //MARK: - Visual Content
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        return scrollView
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        return view
     }()
     
     private let dormLogo: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "DormLogo")
+        imageView.backgroundColor = .systemGray5
+        imageView.image = UIImage(named: "DormMarket")
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 10
+        imageView.clipsToBounds = true
         return imageView
     }()
     
+    private let loginField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Log in"
+        field.borderStyle = .roundedRect
+        field.returnKeyType = .next
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        field.leftViewMode = .always
+        field.clearButtonMode = .whileEditing
+        return field
+    }()
     
+    private let passwordField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Password"
+        field.borderStyle = .roundedRect
+        field.returnKeyType = .done
+        field.isSecureTextEntry = true
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        field.leftViewMode = .always
+        field.clearButtonMode = .whileEditing
+        return field
+    }()
+    
+    private lazy var loginButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Login", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(LoginTouched), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    //MARK: - View Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        setupView()
+        setupUI()
+    }
+    
+    //MARK: - Functions
+    private func setupView() {
+        view.addSubview(scrollView)
+        scrollView.addSubview(contentView)
+        // Используем ваше расширение addSubviews
+        contentView.addSubviews(dormLogo, loginField, passwordField, loginButton)
+    }
+    
+    private func setupUI() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        dormLogo.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(60)
+            make.centerX.equalToSuperview()
+            make.size.equalTo(100)
+        }
+        
+        loginField.snp.makeConstraints { make in
+            make.top.equalTo(dormLogo.snp.bottom).offset(40)
+            make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+        }
+        
+        passwordField.snp.makeConstraints { make in
+            make.top.equalTo(loginField.snp.bottom).offset(20)
+            make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+        }
+        
+        loginButton.snp.makeConstraints { make in
+            make.top.equalTo(passwordField.snp.bottom).offset(30)
+            make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+            // Важно: привязка к низу contentView, чтобы scrollView знал размер контента
+            make.bottom.equalToSuperview().offset(-20)
+        }
+    }
+    
+    //MARK: - Actions
+    @objc private func LoginTouched() {
+        print("Login button tapped")
     }
 }
