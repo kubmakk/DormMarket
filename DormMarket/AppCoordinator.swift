@@ -33,4 +33,9 @@ class MainCoordinator: Coordinator {
         let vc = LoginViewController()
         navigationController.pushViewController(vc, animated: true)
     }
+    
+    func showSignUpVC(){
+        let vc = SignUpViewController()
+        navigationController.pushViewController(vc, animated: true)
+    }
 }

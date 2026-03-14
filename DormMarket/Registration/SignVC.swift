@@ -1,13 +1,14 @@
 //
-//  LoginVC.swift
+//  SignVC.swift
 //  DormMarket
 //
-//  Created by kubmakk on 18/2/26.
+//  Created by kubmakk on 14.03.2026.
 //
+
 import UIKit
 import SnapKit
 
-class LoginViewController: UIViewController {
+class SignUpViewController: UIViewController {
     
     //MARK: - Visual Content
     private let scrollView: UIScrollView = {
@@ -29,6 +30,17 @@ class LoginViewController: UIViewController {
         imageView.layer.cornerRadius = 10
         imageView.clipsToBounds = true
         return imageView
+    }()
+    private let emailField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Email"
+        field.keyboardType = .emailAddress
+        field.borderStyle = .roundedRect
+        field.returnKeyType = .next
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        field.leftViewMode = .always
+        field.clearButtonMode = .whileEditing
+        return field
     }()
     
     private let loginField: UITextField = {
@@ -54,23 +66,35 @@ class LoginViewController: UIViewController {
         return field
     }()
     
-    private lazy var loginButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Login", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .systemBlue
-        button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(LoginTouched), for: .touchUpInside)
-        return button
+    private let confirmPassField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Confirm your password"
+        field.borderStyle = .roundedRect
+        field.returnKeyType = .done
+        field.isSecureTextEntry = true
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
+        field.leftViewMode = .always
+        field.clearButtonMode = .whileEditing
+        return field
     }()
     
     private lazy var signButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Sign in", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 10
+        button.addTarget(self, action: #selector(SignTouched), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var logButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Sign in", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
-        button.addTarget(self, action: #selector(RegTouched), for: .touchUpInside)
+        button.addTarget(self, action: #selector(LogTouched), for: .touchUpInside)
         return button
     }()
     
@@ -79,7 +103,7 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Вход"
+        title = "Регистрация"
         setupView()
         setupUI()
     }
@@ -88,7 +112,7 @@ class LoginViewController: UIViewController {
     private func setupView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        contentView.addSubviews(dormLogo, loginField, passwordField, loginButton, signButton)
+        contentView.addSubviews(dormLogo,emailField, loginField, passwordField,confirmPassField, signButton, logButton)
     }
     
     private func setupUI() {
@@ -100,6 +124,8 @@ class LoginViewController: UIViewController {
         
         loginField.delegate = self
         passwordField.delegate = self
+        passwordField.delegate = self
+        confirmPassField.delegate = self
         
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide.snp.edges)
@@ -117,8 +143,14 @@ class LoginViewController: UIViewController {
             make.size.equalTo(100)
         }
         
-        loginField.snp.makeConstraints { make in
+        emailField.snp.makeConstraints { make in
             make.top.equalTo(dormLogo.snp.bottom).offset(40)
+            make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+        }
+        
+        loginField.snp.makeConstraints { make in
+            make.top.equalTo(emailField.snp.bottom).offset(20)
             make.left.right.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }
@@ -129,14 +161,20 @@ class LoginViewController: UIViewController {
             make.height.equalTo(50)
         }
         
-        loginButton.snp.makeConstraints { make in
-            make.top.equalTo(passwordField.snp.bottom).offset(30)
+        confirmPassField.snp.makeConstraints { make in
+            make.top.equalTo(passwordField.snp.bottom).offset(20)
             make.left.right.equalToSuperview().inset(20)
             make.height.equalTo(50)
         }
-
+        
         signButton.snp.makeConstraints { make in
-            make.top.equalTo(loginButton.snp.bottom).offset(30)
+            make.top.equalTo(confirmPassField.snp.bottom).offset(30)
+            make.left.right.equalToSuperview().inset(20)
+            make.height.equalTo(50)
+        }
+        
+        logButton.snp.makeConstraints { make in
+            make.top.equalTo(signButton.snp.bottom).offset(30)
             make.left.right.equalToSuperview().inset(20)
             make.height.equalTo(50)
             make.bottom.equalToSuperview().offset(-20)
@@ -144,20 +182,18 @@ class LoginViewController: UIViewController {
     }
     
     //MARK: - Actions
-    @objc private func LoginTouched() {
-        print("Login button tapped")
+    @objc private func SignTouched() {
+        print("SignUp button tapped email: \(emailField.text), login: \(loginField.text) password: \(passwordField.text) confirm \(confirmPassField.text)")
+        
+        
     }
     
-    
-    @objc private func RegTouched() {
-        let registerVC = SignUpViewController()
+    @objc private func LogTouched() {
+        let registerVC = LoginViewController()
         let nav = UINavigationController(rootViewController: registerVC)
-            
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                let window = windowScene.windows.first {
-                
                 window.rootViewController = nav
-                
                 UIView.transition(with: window, duration: 0.1, options: .transitionCrossDissolve, animations: nil)
             }
     }
@@ -170,7 +206,7 @@ class LoginViewController: UIViewController {
             scrollView.verticalScrollIndicatorInsets = insets
 
             DispatchQueue.main.async {
-                self.scrollView.scrollRectToVisible(self.signButton.frame, animated: true)
+                self.scrollView.scrollRectToVisible(self.logButton.frame, animated: true)
             }
         }
         
@@ -193,14 +229,18 @@ class LoginViewController: UIViewController {
     
 }
 
-extension LoginViewController: UITextFieldDelegate {
+extension SignUpViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == loginField {
+        if textField == emailField {
+            loginField.becomeFirstResponder()
+        } else if textField == loginField {
             passwordField.becomeFirstResponder()
         } else if textField == passwordField {
+            confirmPassField.becomeFirstResponder()
+        } else if textField == confirmPassField {
             textField.resignFirstResponder()
-            LoginTouched()
+            SignTouched()
         }
         return true
     }

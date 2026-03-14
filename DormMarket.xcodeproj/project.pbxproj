@@ -24,7 +24,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4C61885E2F44A9A80017EC2E /* DormMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DormMarket.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C61885E2F44A9A80017EC2E /* DormMarket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = DormMarket.app; path = "/Users/kubmakkk/Desktop/Dev/iOS/Проекты/DormMarket/build/Debug-iphoneos/DormMarket.app"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -64,16 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				4C6188602F44A9A80017EC2E /* DormMarket */,
-				4C61885F2F44A9A80017EC2E /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		4C61885F2F44A9A80017EC2E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				4C61885E2F44A9A80017EC2E /* DormMarket.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -131,7 +122,7 @@
 				4CB298AD2F47A0C600B5A872 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 4C61885F2F44A9A80017EC2E /* Products */;
+			productRefGroup = 4C6188552F44A9A80017EC2E;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
