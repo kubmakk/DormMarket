@@ -77,13 +77,22 @@ class LoginViewController: UIViewController {
     private func setupView() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        // Используем ваше расширение addSubviews
         contentView.addSubviews(dormLogo, loginField, passwordField, loginButton)
     }
     
     private func setupUI() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        scrollView.keyboardDismissMode = .onDrag
+        
+        loginField.delegate = self
+        passwordField.delegate = self
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide.snp.edges)
+            make.width.equalTo(scrollView.frameLayoutGuide.snp.width)
         }
         
         contentView.snp.makeConstraints { make in
@@ -113,7 +122,6 @@ class LoginViewController: UIViewController {
             make.top.equalTo(passwordField.snp.bottom).offset(30)
             make.left.right.equalToSuperview().inset(20)
             make.height.equalTo(50)
-            // Важно: привязка к низу contentView, чтобы scrollView знал размер контента
             make.bottom.equalToSuperview().offset(-20)
         }
     }
@@ -121,5 +129,48 @@ class LoginViewController: UIViewController {
     //MARK: - Actions
     @objc private func LoginTouched() {
         print("Login button tapped")
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+            guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+            
+            let insets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            scrollView.contentInset = insets
+            scrollView.verticalScrollIndicatorInsets = insets
+
+            DispatchQueue.main.async {
+                self.scrollView.scrollRectToVisible(self.loginButton.frame, animated: true)
+            }
+        }
+        
+        @objc private func keyboardWillHide(notification: NSNotification) {
+            scrollView.contentInset = .zero
+            scrollView.verticalScrollIndicatorInsets = .zero
+        }
+    
+    // MARK: - View Lifecycle
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        }
+        
+        override func viewWillDisappear(_ animated: Bool) {
+            super.viewWillDisappear(animated)
+            NotificationCenter.default.removeObserver(self)
+        }
+    
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == loginField {
+            passwordField.becomeFirstResponder()
+        } else if textField == passwordField {
+            textField.resignFirstResponder()
+            LoginTouched()
+        }
+        return true
     }
 }
