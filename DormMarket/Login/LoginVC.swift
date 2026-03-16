@@ -145,6 +145,7 @@ class LoginViewController: UIViewController {
     
     //MARK: - Actions
     @objc private func LoginTouched() {
+        HapticVibro.vibrate(style: .rigid)
         print("Login button tapped")
     }
     
