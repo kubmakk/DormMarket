@@ -65,13 +65,17 @@ class ProfileViewController: UIViewController {
     
     func setupUI() {
         view.backgroundColor = .white
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 250))
+        
+        // Fix: Use UIScreen or a safe default width because view.frame.width might be 0 here.
+        let headerWidth = view.frame.width > 0 ? view.frame.width : UIScreen.main.bounds.width
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: headerWidth, height: 250))
+        
         headerView.addSubview(logoutButton)
         headerView.addSubview(plusButton)
         view.addSubview(tableView)
 
         logoutButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
             make.centerX.equalToSuperview()
             make.width.equalTo(100)
             make.height.equalTo(50)
@@ -97,11 +101,13 @@ class ProfileViewController: UIViewController {
         plusButton.showsMenuAsPrimaryAction = true
         
         tableView.tableHeaderView = headerView
-        logoutButton.addTarget(self, action: #selector(buttonTapped), for: .touchDown)
+        
+        logoutButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 
     }
         
     @objc private func buttonTapped(){
+        HapticVibro.vibrate(style: .rigid)
         coordinator?.onLogout()
     }
     
@@ -120,8 +126,8 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        HapticVibro.vibrate(style: .light)
         print(items[indexPath.row])
     }
-    
     
 }

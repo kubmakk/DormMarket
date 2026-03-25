@@ -153,16 +153,8 @@ class LoginViewController: UIViewController {
     
     
     @objc private func RegTouched() {
-        let registerVC = SignUpViewController()
-        let nav = UINavigationController(rootViewController: registerVC)
-            
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                
-                window.rootViewController = nav
-                
-                UIView.transition(with: window, duration: 0.1, options: .transitionCrossDissolve, animations: nil)
-            }
+        HapticVibro.vibrate(style: .rigid)
+        coordinator?.showSignUpVC()
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {

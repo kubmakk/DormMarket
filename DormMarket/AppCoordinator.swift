@@ -42,9 +42,13 @@ class MainCoordinator: Coordinator {
     
     func showProfile(){
         let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
+        profileCoordinator.parentCoordinator = self
         
         profileCoordinator.LogoutStatus = {[weak self] _ in
-            self?.childDidFinish(profileCoordinator)
+            guard let self = self else {return}
+            
+            self.childDidFinish(profileCoordinator)
+            self.showLoginVC()
         }
         
         childCoordinators.append(profileCoordinator)
@@ -54,7 +58,7 @@ class MainCoordinator: Coordinator {
     func showLoginVC(){
         let vc = LoginViewController()
         vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
+        navigationController.setViewControllers([vc], animated: false)
     }
     
     func showSignUpVC(){

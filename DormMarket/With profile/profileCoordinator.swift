@@ -9,7 +9,7 @@ import UIKit
 class ProfileCoordinator: Coordinator {
     
     var navigationController: UINavigationController
-    var childCoordinator = [Coordinator]()
+    var childCoordinators = [Coordinator]()
     weak var parentCoordinator: MainCoordinator?
     
     var LogoutStatus: ((Bool) -> Void)?
@@ -30,10 +30,5 @@ class ProfileCoordinator: Coordinator {
     
     func onLogout(){
         self.LogoutStatus?(true)
-        parentCoordinator?.childDidFinish(self)
-        
-        let vc = LoginViewController()
-        vc.coordinator = self.parentCoordinator
-        navigationController.setViewControllers([vc], animated: false)
     }
 }

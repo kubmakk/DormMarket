@@ -92,7 +92,7 @@ class SignUpViewController: UIViewController {
     
     private lazy var logButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Sign in", for: .normal)
+        button.setTitle("Log in", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .lightGray
         button.layer.cornerRadius = 10
@@ -192,13 +192,8 @@ class SignUpViewController: UIViewController {
     }
     
     @objc private func LogTouched() {
-        let registerVC = LoginViewController()
-        let nav = UINavigationController(rootViewController: registerVC)
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first {
-                window.rootViewController = nav
-                UIView.transition(with: window, duration: 0.1, options: .transitionCrossDissolve, animations: nil)
-            }
+        HapticVibro.vibrate(style: .rigid)
+        coordinator?.showLoginVC()
     }
     
     @objc private func keyboardWillShow(notification: NSNotification) {
