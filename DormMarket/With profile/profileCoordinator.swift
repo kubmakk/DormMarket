@@ -1,0 +1,39 @@
+//
+//  profileCoordinator.swift
+//  DormMarket
+//
+//  Created by kubmakk on 25.03.2026.
+//
+import UIKit
+
+class ProfileCoordinator: Coordinator {
+    
+    var navigationController: UINavigationController
+    var childCoordinator = [Coordinator]()
+    weak var parentCoordinator: MainCoordinator?
+    
+    var LogoutStatus: ((Bool) -> Void)?
+    
+    init(navigationController: UINavigationController) {
+        self.navigationController = navigationController
+    }
+    
+    func start() {
+        showMainFlow()
+    }
+    
+    func showMainFlow(){
+        let vc = ProfileViewController()
+        vc.coordinator = self
+        navigationController.setViewControllers([vc], animated: true)
+    }
+    
+    func onLogout(){
+        self.LogoutStatus?(true)
+        parentCoordinator?.childDidFinish(self)
+        
+        let vc = LoginViewController()
+        vc.coordinator = self.parentCoordinator
+        navigationController.setViewControllers([vc], animated: false)
+    }
+}

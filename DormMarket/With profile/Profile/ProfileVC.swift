@@ -9,12 +9,23 @@ import SnapKit
 
 class ProfileViewController: UIViewController {
     
-    weak var coordinator: MainCoordinator?
+    weak var coordinator: ProfileCoordinator?
     
     let plusButton: UIButton = {
-        let plusButton = UIButton(type: .contactAdd)
-        plusButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        return plusButton
+        var config = UIButton.Configuration.filled()
+            config.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
+        config.baseBackgroundColor = .systemRed
+            config.baseForegroundColor = .white
+            config.cornerStyle = .capsule // Овальная форма сейчас в моде
+            config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
+            
+        let button = UIButton(configuration: config)
+            // Добавляем тень для глубины (тренд 2026)
+            button.layer.shadowColor = UIColor.black.cgColor
+            button.layer.shadowOffset = CGSize(width: 0, height: 4)
+            button.layer.shadowOpacity = 0.2
+            button.layer.shadowRadius = 8
+            return button
     }()
     
     private let logoutButton: UIButton = {
@@ -91,7 +102,7 @@ class ProfileViewController: UIViewController {
     }
         
     @objc private func buttonTapped(){
-        print("Кнопка нажата")
+        coordinator?.onLogout()
     }
     
 }

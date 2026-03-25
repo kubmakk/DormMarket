@@ -9,10 +9,13 @@ import UIKit
 protocol Coordinator: AnyObject {
     var navigationController: UINavigationController { get set }
     func start()
+    
 }
 
 // Main Coordinator to be open App
 class MainCoordinator: Coordinator {
+    var userIsLoggedIn: Bool = true
+
     var navigationController: UINavigationController
     var childCoordinators = [Coordinator]()
     
@@ -21,15 +24,31 @@ class MainCoordinator: Coordinator {
     }
     
     func start() {
-        let vc = ViewController()
-        vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
+        if userIsLoggedIn {
+        showProfile()
+        } else {
+        showLoginVC()
+        }
+    }
+    
+    func childDidFinish(_ child: Coordinator?) {
+        for (index, coordinator) in childCoordinators.enumerated() {
+            if coordinator === child {
+                childCoordinators.remove(at: index)
+                break
+            }
+        }
     }
     
     func showProfile(){
-        let vc = ProfileViewController()
-        vc.coordinator = self
-        navigationController.pushViewController(vc, animated: true)
+        let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
+        
+        profileCoordinator.LogoutStatus = {[weak self] _ in
+            self?.childDidFinish(profileCoordinator)
+        }
+        
+        childCoordinators.append(profileCoordinator)
+        profileCoordinator.start()
     }
     
     func showLoginVC(){
