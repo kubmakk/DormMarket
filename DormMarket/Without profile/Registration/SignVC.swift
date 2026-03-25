@@ -10,6 +10,8 @@ import SnapKit
 
 class SignUpViewController: UIViewController {
     
+    weak var coordinator: MainCoordinator?
+    
     //MARK: - Visual Content
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -185,6 +187,7 @@ class SignUpViewController: UIViewController {
     @objc private func SignTouched() {
         print("SignUp button tapped email: \(emailField.text), login: \(loginField.text) password: \(passwordField.text) confirm \(confirmPassField.text)")
         
+        coordinator?.showProfile()
         
     }
     

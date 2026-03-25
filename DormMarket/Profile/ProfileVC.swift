@@ -9,6 +9,8 @@ import SnapKit
 
 class ProfileViewController: UIViewController {
     
+    weak var coordinator: MainCoordinator?
+    
     let plusButton: UIButton = {
         let plusButton = UIButton(type: .contactAdd)
         plusButton.setImage(UIImage(systemName: "plus"), for: .normal)

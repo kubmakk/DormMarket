@@ -9,6 +9,8 @@ import SnapKit
 
 class LoginViewController: UIViewController {
     
+    var coordinator: MainCoordinator?
+    
     //MARK: - Visual Content
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
