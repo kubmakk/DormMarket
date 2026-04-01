@@ -9,18 +9,21 @@ import SnapKit
 
 class ProfileViewController: UIViewController {
     
+    var isLoading = false
+
     weak var coordinator: ProfileCoordinator?
+    var product: [Products] = []
     
     let plusButton: UIButton = {
         var config = UIButton.Configuration.filled()
             config.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
         config.baseBackgroundColor = .systemRed
             config.baseForegroundColor = .white
-            config.cornerStyle = .capsule // Овальная форма сейчас в моде
+            config.cornerStyle = .capsule
             config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
             
         let button = UIButton(configuration: config)
-            // Добавляем тень для глубины (тренд 2026)
+            
             button.layer.shadowColor = UIColor.black.cgColor
             button.layer.shadowOffset = CGSize(width: 0, height: 4)
             button.layer.shadowOpacity = 0.2
@@ -46,15 +49,10 @@ class ProfileViewController: UIViewController {
         return table
     }()
     
-    let items = [
-        "item1",
-        "item2",
-        "item3",
-        "item4"
-    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetch()
         title = "Hi There"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
@@ -63,10 +61,32 @@ class ProfileViewController: UIViewController {
         setupUI()
     }
     
+    func fetch(){
+        fetchData{[weak self] downloadProducts in
+            DispatchQueue.main.async {
+                self?.product = downloadProducts
+                self?.tableView.reloadData()
+            }
+        }
+    }
+    
+    func loadMore(){
+        guard !isLoading else {return}
+        isLoading = true
+        
+        fetchData{[weak self] newItems in
+            self?.product.append(contentsOf: newItems)
+            DispatchQueue.main.async {
+                self?.isLoading = false
+                self?.tableView.reloadData()
+            }
+            
+        }
+    }
+    
     func setupUI() {
         view.backgroundColor = .white
         
-        // Fix: Use UIScreen or a safe default width because view.frame.width might be 0 here.
         let headerWidth = view.frame.width > 0 ? view.frame.width : UIScreen.main.bounds.width
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: headerWidth, height: 250))
         
@@ -103,6 +123,7 @@ class ProfileViewController: UIViewController {
         tableView.tableHeaderView = headerView
         
         logoutButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
 
     }
         
@@ -115,19 +136,27 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return product.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = items[indexPath.row]
+        let products = product[indexPath.row]
+        cell.textLabel?.text = products.title
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         HapticVibro.vibrate(style: .light)
-        print(items[indexPath.row])
+        print(product[indexPath.row])
     }
+    
+//    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        
+//        if indexPath.row == product.count - 1 {
+//            loadMore()
+//        }
+//    }
     
 }
