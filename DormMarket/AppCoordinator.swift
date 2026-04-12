@@ -9,7 +9,7 @@ import UIKit
 protocol Coordinator: AnyObject {
     var navigationController: UINavigationController { get set }
     func start()
-    
+
 }
 
 // Main Coordinator to be open App
@@ -18,11 +18,11 @@ class MainCoordinator: Coordinator {
 
     var navigationController: UINavigationController
     var childCoordinators = [Coordinator]()
-    
+
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
+
     func start() {
         if userIsLoggedIn {
         showProfile()
@@ -30,7 +30,7 @@ class MainCoordinator: Coordinator {
         showLoginVC()
         }
     }
-    
+
     func childDidFinish(_ child: Coordinator?) {
         for (index, coordinator) in childCoordinators.enumerated() {
             if coordinator === child {
@@ -39,29 +39,29 @@ class MainCoordinator: Coordinator {
             }
         }
     }
-    
-    func showProfile(){
+
+    func showProfile() {
         let profileCoordinator = ProfileCoordinator(navigationController: navigationController)
         profileCoordinator.parentCoordinator = self
-        
-        profileCoordinator.LogoutStatus = {[weak self] _ in
+
+        profileCoordinator.logoutStatus = {[weak self] _ in
             guard let self = self else {return}
-            
+
             self.childDidFinish(profileCoordinator)
             self.showLoginVC()
         }
-        
+
         childCoordinators.append(profileCoordinator)
         profileCoordinator.start()
     }
-    
-    func showLoginVC(){
+
+    func showLoginVC() {
         let vc = LoginViewController()
         vc.coordinator = self
         navigationController.setViewControllers([vc], animated: false)
     }
-    
-    func showSignUpVC(){
+
+    func showSignUpVC() {
         let vc = SignUpViewController()
         vc.coordinator = self
         navigationController.pushViewController(vc, animated: true)

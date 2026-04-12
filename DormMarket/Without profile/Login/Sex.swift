@@ -4,10 +4,10 @@
 ////
 ////  Created by kubmakk on 18/2/26.
 ////
-//import UIKit
-//import SnapKit
+// import UIKit
+// import SnapKit
 //
-//class LoginViewController: ViewController{
+// class LoginViewController: ViewController{
 //    
 //    //MARK: - Visual Content
 //    private lazy var scrollView: UIScrollView = {
@@ -173,4 +173,4 @@
 //        print("fdkljkadshjfdsasdaiuf")
 //    }
 //
-//}
+// }
