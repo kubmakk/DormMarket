@@ -32,28 +32,17 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
-				Library/UIComponents.swift,
+				UIComponents/UIComponents.swift,
 			);
 			target = 4C61885D2F44A9A80017EC2E /* DormMarket */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		4C189C3C2F8154B0007BA9F1 /* Exceptions for "DormMarket" folder in "Copy Bundle Resources" phase from "DormMarket" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 4C61885C2F44A9A80017EC2E /* Resources */;
-			membershipExceptions = (
-				Library/UIComponents.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		4C6188602F44A9A80017EC2E /* DormMarket */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				4C6188702F44A9AA0017EC2E /* Exceptions for "DormMarket" folder in "DormMarket" target */,
-				4C189C3C2F8154B0007BA9F1 /* Exceptions for "DormMarket" folder in "Copy Bundle Resources" phase from "DormMarket" target */,
 			);
 			path = DormMarket;
 			sourceTree = "<group>";
@@ -91,7 +80,6 @@
 				4C61885B2F44A9A80017EC2E /* Frameworks */,
 				4C61885C2F44A9A80017EC2E /* Resources */,
 				4C6BDE1D2F47A2020062A433 /* Embed Frameworks */,
-				4C1BA5A22F8BB05000A8D1C4 /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -154,27 +142,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4C1BA5A22F8BB05000A8D1C4 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Добавляем путь к Homebrew в переменную PATH\nexport PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4C61885A2F44A9A80017EC2E /* Sources */ = {

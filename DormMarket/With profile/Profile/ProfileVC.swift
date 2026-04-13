@@ -8,40 +8,47 @@ import UIKit
 import SnapKit
 
 class ProfileViewController: UIViewController, ThemeUpdatable {
-
+    
     var isLoading = false
-
+    
     weak var coordinator: ProfileCoordinator?
     var product: [Products] = []
-
-    let plusButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-            config.image = UIImage(systemName: "plus", withConfiguration: UIImage.SymbolConfiguration(weight: .bold))
-        config.baseBackgroundColor = .systemRed
-            config.baseForegroundColor = .white
-            config.cornerStyle = .capsule
-            config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 12, bottom: 12, trailing: 12)
-
-        let button = UIButton(configuration: config)
-
-            button.layer.shadowColor = UIColor.black.cgColor
-            button.layer.shadowOffset = CGSize(width: 0, height: 4)
-            button.layer.shadowOpacity = 0.2
-            button.layer.shadowRadius = 8
-            return button
+    //MARK: - Objects
+    
+    private let userAvatar: UIImageView = {
+        let avatar = UIImageView()
+        avatar.image = UIImage(named: "dormmarket")
+        avatar.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        avatar.layer.cornerRadius = 25
+        avatar.clipsToBounds = true
+        avatar.contentMode = .scaleAspectFill
+        return avatar
     }()
-
-    private let logoutButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.title = "Exit"
-        config.baseBackgroundColor = .systemRed
+    
+    private let profileButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.title = "UserName"
+        config.image = UIImage(named: "chevron.right")
+        config.imagePlacement = .trailing
+        config.imagePadding = 5
+        config.contentInsets = .zero
         config.baseForegroundColor = .black
-        config.cornerStyle = .large
-        let button = UIButton(configuration: config, primaryAction: nil)
-
-        return button
+        let bth = UIButton(configuration: config)
+        return bth
     }()
-
+        
+    
+    private let settingsBth = UIButton(configuration: .dormMarketCapsule(systemName: "gear"))
+    
+    private let categories: UIStackView = {
+       var stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 16
+        stack.distribution = .fill
+        
+        return stack
+    }()
+    
     private let tableView: UITableView = {
         let table = UITableView()
         table.backgroundColor = .clear
@@ -109,46 +116,6 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
     }
 
     func setupUI() {
-
-        let headerWidth = view.frame.width > 0 ? view.frame.width : UIScreen.main.bounds.width
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: headerWidth, height: 250))
-
-        headerView.addSubview(logoutButton)
-        headerView.addSubview(plusButton)
-        view.addSubview(tableView)
-
-        logoutButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-            make.width.equalTo(100)
-            make.height.equalTo(50)
-        }
-
-        tableView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
-        }
-
-        plusButton.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(20)
-            make.right.equalToSuperview().inset(20)
-        }
-
-        let action1 = UIAction(title: "DarkMode", image: UIImage(systemName: "photo")) { _  in
-            UserSettings.shared.isDarkModeEnabled = true
-            self.updateInterface()
-        }
-        let action2 = UIAction(title: "WhiteMode", image: UIImage(systemName: "doc")) { _ in
-            UserSettings.shared.isDarkModeEnabled = false
-            self.updateInterface()
-        }
-
-        plusButton.menu = UIMenu(title: "Options", children: [action1, action2])
-        plusButton.showsMenuAsPrimaryAction = true
-
-        tableView.tableHeaderView = headerView
-
-        logoutButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-
     }
 
     @objc private func buttonTapped() {
