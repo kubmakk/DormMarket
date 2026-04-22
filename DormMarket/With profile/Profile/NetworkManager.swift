@@ -15,27 +15,34 @@ struct Products: Codable {
 
 }
 
-func fetchData(completion: @escaping ([Products]) -> Void) {
-    guard let url = URL(string: "https://jsonplaceholder.typicode.com/posts") else {return}
-
-    let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
-        if error != nil {
-            print("Ошибка сети")
-            return
+final class NetworkManager {
+    static let shared = NetworkManager()
+    init() { }
+    
+    func fetchData(userId: Int? = nil, completion: @escaping ([Products]) -> Void) {
+        var urlString = "https://jsonplaceholder.typicode.com/posts"
+        
+        if let id = userId {
+            urlString += "user?=\(id)"
         }
-
-        guard let data = data else {return}
-
-        do {
-            let decodedProducts = try JSONDecoder().decode([Products].self, from: data)
-
-            completion(decodedProducts)
-
-        } catch {
-            print("Error parc info")
+        
+        guard let url = URL(string: urlString) else {return}
+        
+        let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
+            if error != nil {
+                print("Ошибка сети")
+                return
+            }
+            guard let data = data else {return}
+            do {
+                let decodedProducts = try JSONDecoder().decode([Products].self, from: data)
+                completion(decodedProducts)
+            } catch {
+                print("Error parc info")
+            }
         }
+        task.resume()
+
     }
-
-    task.resume()
 
 }

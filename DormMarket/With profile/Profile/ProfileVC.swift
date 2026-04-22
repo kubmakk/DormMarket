@@ -66,31 +66,11 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         navigationItem.largeTitleDisplayMode = .automatic
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.register(DormTableCell.self, forCellReuseIdentifier: "cell")
         setupUI()
+        
     }
     // MARK: Functions
-
-    func createOrthogonalSection() -> NSCollectionLayoutSection {
-
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1.0)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.8),
-            heightDimension: .absolute(200)
-        )
-
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-
-        section.orthogonalScrollingBehavior = .continuous
-
-        return section
-    }
 
     func fetch() {
         fetchData {[weak self] downloadProducts in
@@ -116,6 +96,18 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
     }
 
     func setupUI() {
+        let screenWidth = view.window?.windowScene?.screen.bounds.width ?? 0
+        let headerWidth = view.frame.width > 0 ? view.frame.width : screenWidth
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: headerWidth, height: 200))
+        headerView.backgroundColor = .systemBlue 
+        
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        
+        tableView.tableHeaderView = headerView
     }
 
     @objc private func buttonTapped() {
@@ -131,12 +123,12 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DormTableCell
         let products = product[indexPath.row]
-        cell.textLabel?.text = products.title
-        let isDark = UserSettings.shared.isDarkModeEnabled
-        cell.backgroundColor = isDark ? .black : .white
-        cell.textLabel?.textColor = isDark ? .white : .black
+        cell.configure(with: products.title)
+//        let isDark = UserSettings.shared.isDarkModeEnabled
+//        cell.backgroundColor = isDark ? .black : .white
+//        cell.textLabel?.textColor = isDark ? .white : .black
         return cell
     }
 
