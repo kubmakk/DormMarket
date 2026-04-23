@@ -15,34 +15,44 @@ struct Products: Codable {
 
 }
 
+enum APIEndpoints {
+    case posts
+    case users
+    case image(id: String)
+    
+    var url: URL? {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "jsonplaceholder.typicode.com"
+        switch self {
+        case .posts: components.path = "/posts"
+        case .users: components.path = "/users"
+        case .image(let id): components.path = "/images/\(id)"
+        }
+        return components.url
+    }
+}
+
 final class NetworkManager {
     static let shared = NetworkManager()
-    init() { }
+    private init() { }
     
-    func fetchData(userId: Int? = nil, completion: @escaping ([Products]) -> Void) {
-        var urlString = "https://jsonplaceholder.typicode.com/posts"
-        
-        if let id = userId {
-            urlString += "user?=\(id)"
+    func fetchData<T: Codable>(endpoint: APIEndpoints) async throws -> T {
+        guard let url = endpoint.url else {
+            throw URLError(.badURL)
         }
         
-        guard let url = URL(string: urlString) else {return}
+        let (data, responce) = try await URLSession.shared.data(from: url)
         
-        let task = URLSession.shared.dataTask(with: url) { (data, _, error) in
-            if error != nil {
-                print("Ошибка сети")
-                return
-            }
-            guard let data = data else {return}
-            do {
-                let decodedProducts = try JSONDecoder().decode([Products].self, from: data)
-                completion(decodedProducts)
-            } catch {
-                print("Error parc info")
-            }
+        guard (responce as? HTTPURLResponse)?.statusCode == 200 else {
+            throw URLError(.badServerResponse)
         }
-        task.resume()
+        
+        return try JSONDecoder().decode(T.self, from: data)
+    }
+        
 
     }
 
-}
+
+

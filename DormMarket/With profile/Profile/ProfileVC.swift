@@ -73,10 +73,21 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
     // MARK: Functions
 
     func fetch() {
-        fetchData {[weak self] downloadProducts in
-            DispatchQueue.main.async {
-                self?.product = downloadProducts
-                self?.tableView.reloadData()
+        guard !isLoading else {return}
+        isLoading = true
+        
+        Task {
+            do {
+                let fetchData: [Products] = try await NetworkManager.shared.fetchData(endpoint: .posts)
+                
+                await MainActor.run {
+                    self.product = fetchData
+                    self.isLoading = false
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print("loadContent error: \(error)")
+                self.isLoading = false
             }
         }
     }
@@ -84,14 +95,20 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
     func loadMore() {
         guard !isLoading else {return}
         isLoading = true
-
-        fetchData {[weak self] newItems in
-            self?.product.append(contentsOf: newItems)
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                self?.tableView.reloadData()
+        
+        Task {
+            do {
+                let fetchData: [Products] = try await NetworkManager.shared.fetchData(endpoint: .posts)
+                
+                await MainActor.run {
+                    self.product.append(contentsOf: fetchData)
+                    self.isLoading = false
+                    self.tableView.reloadData()
+                }
+            } catch {
+                print("loadContent error: \(error)")
+                self.isLoading = false
             }
-
         }
     }
 
