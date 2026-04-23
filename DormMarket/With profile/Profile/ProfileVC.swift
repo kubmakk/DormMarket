@@ -87,7 +87,9 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
                 }
             } catch {
                 print("loadContent error: \(error)")
-                self.isLoading = false
+                await MainActor.run{
+                    self.isLoading = false
+                }
             }
         }
     }
@@ -140,9 +142,13 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! DormTableCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? DormTableCell else {
+            return UITableViewCell()
+        }
+        
         let products = product[indexPath.row]
-        cell.configure(with: products.title)
+//        cell.configure(with: products.title)
+        cell.configure(with: products.id, title: products.title, bodyText: products.body, imageCenter: products.useridImage, imageAvatar: products.image)
 //        let isDark = UserSettings.shared.isDarkModeEnabled
 //        cell.backgroundColor = isDark ? .black : .white
 //        cell.textLabel?.textColor = isDark ? .white : .black
