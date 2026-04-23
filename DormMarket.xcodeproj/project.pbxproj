@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4C2D3E072F9AAE960066DF9D /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 4C2D3E062F9AAE960066DF9D /* Kingfisher */; };
 		4CB298AF2F47A0C600B5A872 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4CB298AE2F47A0C600B5A872 /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C2D3E072F9AAE960066DF9D /* Kingfisher in Frameworks */,
 				4CB298AF2F47A0C600B5A872 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +93,7 @@
 			name = DormMarket;
 			packageProductDependencies = (
 				4CB298AE2F47A0C600B5A872 /* SnapKit */,
+				4C2D3E062F9AAE960066DF9D /* Kingfisher */,
 			);
 			productName = DormMarket;
 			productReference = 4C816FE12F689AF9005A8E04 /* DormMarket.app */;
@@ -122,6 +125,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4CB298AD2F47A0C600B5A872 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				4C2D3E052F9AAE960066DF9D /* XCRemoteSwiftPackageReference "kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4C6188552F44A9A80017EC2E;
@@ -363,6 +367,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4C2D3E052F9AAE960066DF9D /* XCRemoteSwiftPackageReference "kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.8.1;
+			};
+		};
 		4CB298AD2F47A0C600B5A872 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -374,6 +386,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4C2D3E062F9AAE960066DF9D /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4C2D3E052F9AAE960066DF9D /* XCRemoteSwiftPackageReference "kingfisher" */;
+			productName = Kingfisher;
+		};
 		4CB298AE2F47A0C600B5A872 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4CB298AD2F47A0C600B5A872 /* XCRemoteSwiftPackageReference "SnapKit" */;

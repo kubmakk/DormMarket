@@ -36,9 +36,7 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         let bth = UIButton(configuration: config)
         return bth
     }()
-        
     
-    private let settingsBth = UIButton(configuration: .dormMarketCapsule(systemName: "gear"))
     
     private let categories: UIStackView = {
        var stack = UIStackView()
@@ -55,14 +53,48 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
+    
+    
+    // 1. Экшены остаются lazy (не забудь [weak self])
+    lazy var action1 = UIAction(title: "DarkMode", image: UIImage(systemName: "moon")) { [weak self] _ in
+        UserSettings.shared.isDarkModeEnabled = true
+        self?.updateInterface()
+    }
+
+    lazy var action2 = UIAction(title: "WhiteMode", image: UIImage(systemName: "sun.max")) { [weak self] _ in
+        UserSettings.shared.isDarkModeEnabled = false
+        self?.updateInterface()
+    }
+
+    // 2. Кнопку тоже делаем lazy var и инициализируем через замыкание
+    lazy var settingsBth: UIButton = {
+        let button = UIButton(configuration: .dormMarketCapsule(systemName: "gear"))
+        // Теперь здесь можно обращаться к action1 и action2
+        button.menu = UIMenu(title: "Options", children: [action1, action2])
+        button.showsMenuAsPrimaryAction = true // Чтобы меню открывалось сразу по нажатию
+        return button
+    }()
+    
+//    private lazy var settingsBth: UIButton = {
+//        let button = UIButton(configuration: .dormMarketCapsule(systemName: "gear"))
+//        
+//        button.addAction(UIAction { [weak self] _ in
+//            // 1. Просто вызываем fetch.
+//            // reloadData внутри него сам обновит таблицу, когда данные придут.
+//            self?.fetch()
+//            print("Fetching started...")
+//            HapticVibro.vibrate(style: .light)
+//            
+//        }, for: .touchUpInside)
+//        
+//        return button
+//    }()
 
     // MARK: - View
     override func viewDidLoad() {
         super.viewDidLoad()
         updateInterface()
         fetch()
-        title = "Hi There"
-        navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .automatic
         tableView.dataSource = self
         tableView.delegate = self
@@ -119,7 +151,11 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         let headerWidth = view.frame.width > 0 ? view.frame.width : screenWidth
         
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: headerWidth, height: 200))
-        headerView.backgroundColor = .systemBlue 
+        headerView.backgroundColor = .systemBlue
+        headerView.addSubview(settingsBth)
+        settingsBth.snp.makeConstraints{make in
+            make.top.right.equalToSuperview().inset(16)
+        }
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
@@ -145,10 +181,15 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? DormTableCell else {
             return UITableViewCell()
         }
-        
+        let isDark = UserSettings.shared.isDarkModeEnabled
         let products = product[indexPath.row]
-//        cell.configure(with: products.title)
-        cell.configure(with: products.id, title: products.title, bodyText: products.body, imageCenter: products.useridImage, imageAvatar: products.image)
+        cell.configure(
+                with: products.userId,
+                title: products.title,
+                bodyText: products.body,
+                imageCenter: products.image,
+                imageAvatar: products.useridImage, isDark: isDark
+            )
 //        let isDark = UserSettings.shared.isDarkModeEnabled
 //        cell.backgroundColor = isDark ? .black : .white
 //        cell.textLabel?.textColor = isDark ? .white : .black

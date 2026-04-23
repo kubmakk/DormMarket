@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import SnapKit
+import Kingfisher
 
 extension UIButton.Configuration {
     static func dormMarketCapsule(systemName: String) -> UIButton.Configuration {
@@ -29,6 +30,7 @@ final class DormTableCell: UITableViewCell {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 10
+        image.clipsToBounds = true
         image.backgroundColor = .systemGray6
         return image
     }()
@@ -44,6 +46,7 @@ final class DormTableCell: UITableViewCell {
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 8
         image.backgroundColor = .systemRed
+        image.clipsToBounds = true
         return image
     }()
     
@@ -106,13 +109,33 @@ final class DormTableCell: UITableViewCell {
         
     }
     
-    func configure(with userId: Int, title: String, bodyText: String, imageCenter: String?, imageAvatar: String?) {
+    func configure(with userId: Int, title: String, bodyText: String, imageCenter: String?, imageAvatar: String?, isDark: Bool) {
         self.userId.text = "ID: \(userId)"
         self.title.text = title
         self.bodyText.text = bodyText
-        self.userImage.image = UIImage(systemName: "person.circle")
         
+        let textColor: UIColor = isDark ? .white : .black
+            self.userId.textColor = textColor
+            self.title.textColor = textColor
+            self.bodyText.textColor = textColor
+            
+            self.backgroundColor = isDark ? .black : .white
         
+        let placeholder = UIImage(systemName: "person.circle")
+        
+        self.userImage.kf.cancelDownloadTask()
+        self.centerImage.kf.cancelDownloadTask()
+        
+        self.userImage.image = placeholder
+        self.centerImage.image = nil
+        
+        if let urlString = imageAvatar, let url = URL(string: urlString) {
+            self.userImage.kf.setImage(with: url, placeholder: placeholder, options: [.cacheOriginalImage, .transition(.fade(0.2))])
+        }
+        
+        if let urlString = imageCenter, let url = URL(string: urlString) {
+            self.centerImage.kf.setImage(with: url, options: [.cacheOriginalImage, .transition(.fade(0.2))])
+        }
     }
 }
 

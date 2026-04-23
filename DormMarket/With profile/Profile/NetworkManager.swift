@@ -46,11 +46,6 @@ final class NetworkManager {
         
         let (data, response) = try await URLSession.shared.data(from: url)
         
-        if let httpResponse = response as? HTTPURLResponse {
-                // h2 = HTTP/2, http/1.1 = HTTP/1.1, h3 = HTTP/3
-                print("Protocol: \(httpResponse.value(forHTTPHeaderField: "X-Apple-Network-Protocol") ?? "unknown")")
-            }
-        
         guard (response as? HTTPURLResponse)?.statusCode == 200 else {
             throw URLError(.badServerResponse)
         }
