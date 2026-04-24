@@ -139,4 +139,31 @@ final class DormTableCell: UITableViewCell {
     }
 }
 
+class MainTabBarController: UITabBarController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupTabs()
+        
+        
+        
+    }
+    
+    private func setupTabs() {
+        let homeVC = ProfileViewController()
+        let settingsVC = SettingsViewController()
+        let authorsVC = AuthorsViewController()
+        
+        homeVC.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(systemName: "house"), tag: 0)
+        settingsVC.tabBarItem = UITabBarItem(title: "Настройки", image: UIImage(systemName: "gear"), tag: 1)
+        authorsVC.tabBarItem = UITabBarItem(title: "Авторы", image: UIImage(systemName: "figure.2.circle"), tag: 2)
+        
+        let nav1 = UINavigationController(rootViewController: homeVC)
+        let nav2 = UINavigationController(rootViewController: settingsVC)
+        let nav3 = UINavigationController(rootViewController: authorsVC)
+        
+        self.viewControllers = [nav1, nav2, nav3]
+    }
+}
+
 

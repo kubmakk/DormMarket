@@ -17,11 +17,10 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
     
     private let userAvatar: UIImageView = {
         let avatar = UIImageView()
-        avatar.image = UIImage(named: "dormmarket")
-        avatar.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         avatar.layer.cornerRadius = 25
         avatar.clipsToBounds = true
         avatar.contentMode = .scaleAspectFill
+        avatar.backgroundColor = .systemGray6
         return avatar
     }()
     
@@ -153,8 +152,20 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: headerWidth, height: 200))
         headerView.backgroundColor = .systemBlue
         headerView.addSubview(settingsBth)
+        headerView.addSubview(userAvatar)
+        headerView.addSubview(profileButton)
+        
+        userAvatar.snp.makeConstraints{ make in
+            make.top.leading.equalToSuperview().inset(16)
+            make.size.equalTo(50)
+        }
+        
+        profileButton.snp.makeConstraints{ make in
+            make.centerY.equalTo(userAvatar.snp.centerY)
+            make.leading.equalTo(userAvatar.snp.trailing).offset(12)
+        }
         settingsBth.snp.makeConstraints{make in
-            make.top.right.equalToSuperview().inset(16)
+            make.top.trailing.equalToSuperview().inset(16)
         }
         
         view.addSubview(tableView)

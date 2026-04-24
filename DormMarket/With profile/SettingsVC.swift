@@ -1,18 +1,18 @@
 //
-//  ViewController.swift
+//  SettingsVC.swift
 //  DormMarket
 //
-//  Created by kubmakk on 17/2/26.
+//  Created by kubmakk on 24.04.2026.
 //
 
 import UIKit
 
-class AuthorsViewController: UIViewController {
+class SettingsViewController: UIViewController {
     weak var coordinator: MainCoordinator?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .systemRed
     }
 
 }

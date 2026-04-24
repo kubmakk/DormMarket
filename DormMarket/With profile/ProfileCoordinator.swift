@@ -25,7 +25,8 @@ class ProfileCoordinator: Coordinator {
     func showMainFlow() {
         let vc = ProfileViewController()
         vc.coordinator = self
-        navigationController.setViewControllers([vc], animated: true)
+//        navigationController.setViewControllers([vc], animated: true)
+        navigationController.setViewControllers([MainTabBarController()], animated: true)
     }
 
     func onLogout() {

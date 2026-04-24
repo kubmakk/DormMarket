@@ -14,7 +14,7 @@ protocol Coordinator: AnyObject {
 
 // Main Coordinator to be open App
 class MainCoordinator: Coordinator {
-    var userIsLoggedIn: Bool = true
+    var userIsLoggedIn: Bool = false
 
     var navigationController: UINavigationController
     var childCoordinators = [Coordinator]()
@@ -66,4 +66,6 @@ class MainCoordinator: Coordinator {
         vc.coordinator = self
         navigationController.pushViewController(vc, animated: true)
     }
+    
+    
 }
