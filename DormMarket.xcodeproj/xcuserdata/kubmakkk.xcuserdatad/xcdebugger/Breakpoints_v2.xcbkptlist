@@ -3,4 +3,68 @@
    uuid = "8E33F448-0913-4C6A-8E58-9DE13E13CBA5"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9BFDC691-771F-451C-A24E-EBF4C19CA34F"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DormMarket/With profile/ProfileCoordinator.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "33"
+            endingLineNumber = "33"
+            landmarkName = "onLogout()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9BFDC691-771F-451C-A24E-EBF4C19CA34F - 793d1163000250df"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DormMarket.ProfileCoordinator.onLogout() -&gt; ()"
+                  moduleName = "DormMarket.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kubmakkk/Desktop/Dev/iOS/%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D1%8B/DormMarket/DormMarket/With%20profile/ProfileCoordinator.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "36"
+                  endingLineNumber = "36">
+               </Location>
+               <Location
+                  uuid = "9BFDC691-771F-451C-A24E-EBF4C19CA34F - 793d116300025119"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DormMarket.ProfileCoordinator.onLogout() -&gt; ()"
+                  moduleName = "DormMarket.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kubmakkk/Desktop/Dev/iOS/%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D1%8B/DormMarket/DormMarket/With%20profile/ProfileCoordinator.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "34"
+                  endingLineNumber = "34">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D0BDDB61-993B-46D4-9497-1D894644F264"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DormMarket/With profile/Profile/ProfileVC.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "ProfileViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

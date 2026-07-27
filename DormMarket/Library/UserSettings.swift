@@ -16,6 +16,7 @@ class UserSettings {
     private enum Keys {
         static let isDarkModeEnabled = "isDarkModeEnabled"
         static let fontSize = "fontSize"
+        static let isLogin = "isLogin"
     }
 
     var isDarkModeEnabled: Bool {
@@ -29,6 +30,15 @@ class UserSettings {
         }
         set {
             defaults.set(newValue, forKey: Keys.fontSize)
+        }
+    }
+    
+    var isLogin: Bool{
+        get{
+            return defaults.bool(forKey: Keys.isLogin)
+        }
+        set{
+            defaults.set(newValue, forKey: Keys.isLogin)
         }
     }
 

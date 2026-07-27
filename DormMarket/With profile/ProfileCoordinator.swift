@@ -19,14 +19,15 @@ class ProfileCoordinator: Coordinator {
     }
 
     func start() {
+        UserSettings.shared.isLogin = true
         showMainFlow()
     }
 
     func showMainFlow() {
-        let vc = ProfileViewController()
-        vc.coordinator = self
-//        navigationController.setViewControllers([vc], animated: true)
-        navigationController.setViewControllers([MainTabBarController()], animated: true)
+        let profile = ProfileViewController()
+        profile.coordinator = self
+        let vc = MainTabBarController(profileVC: profile)
+        navigationController.setViewControllers([vc], animated: true)
     }
 
     func onLogout() {

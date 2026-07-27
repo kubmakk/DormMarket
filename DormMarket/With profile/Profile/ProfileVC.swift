@@ -53,8 +53,6 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         return table
     }()
     
-    
-    // 1. Экшены остаются lazy (не забудь [weak self])
     lazy var action1 = UIAction(title: "DarkMode", image: UIImage(systemName: "moon")) { [weak self] _ in
         UserSettings.shared.isDarkModeEnabled = true
         self?.updateInterface()
@@ -64,13 +62,18 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         UserSettings.shared.isDarkModeEnabled = false
         self?.updateInterface()
     }
+    
+    lazy var action3 = UIAction(title: "Exit", image: UIImage(systemName: "person.slash.fill")) {[weak self] _ in
+        HapticVibro.vibrate(style: .rigid)
+        print("ССылка на координатор \(self?.coordinator as Any)")
+        self?.coordinator?.onLogout()
+    }
 
     // 2. Кнопку тоже делаем lazy var и инициализируем через замыкание
     lazy var settingsBth: UIButton = {
         let button = UIButton(configuration: .dormMarketCapsule(systemName: "gear"))
-        // Теперь здесь можно обращаться к action1 и action2
-        button.menu = UIMenu(title: "Options", children: [action1, action2])
-        button.showsMenuAsPrimaryAction = true // Чтобы меню открывалось сразу по нажатию
+        button.menu = UIMenu(title: "Options", children: [action1, action2, action3])
+        button.showsMenuAsPrimaryAction = true
         return button
     }()
     
@@ -101,8 +104,8 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
         setupUI()
         
     }
-    // MARK: Functions
-
+    
+    // MARK: - Functions
     func fetch() {
         guard !isLoading else {return}
         isLoading = true
@@ -183,6 +186,7 @@ class ProfileViewController: UIViewController, ThemeUpdatable {
 
 }
 
+//MARK: - Extensions
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return product.count
@@ -221,3 +225,4 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
 }
+

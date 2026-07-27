@@ -14,7 +14,7 @@ protocol Coordinator: AnyObject {
 
 // Main Coordinator to be open App
 class MainCoordinator: Coordinator {
-    var userIsLoggedIn: Bool = false
+    var userIsLoggedIn: Bool = UserSettings.shared.isLogin
 
     var navigationController: UINavigationController
     var childCoordinators = [Coordinator]()
@@ -32,12 +32,7 @@ class MainCoordinator: Coordinator {
     }
 
     func childDidFinish(_ child: Coordinator?) {
-        for (index, coordinator) in childCoordinators.enumerated() {
-            if coordinator === child {
-                childCoordinators.remove(at: index)
-                break
-            }
-        }
+        childCoordinators = childCoordinators.filter{ $0 !== child }
     }
 
     func showProfile() {

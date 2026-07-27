@@ -140,17 +140,25 @@ final class DormTableCell: UITableViewCell {
 }
 
 class MainTabBarController: UITabBarController {
+    
+    private let profileVC: ProfileViewController
 
+    init(profileVC: ProfileViewController){
+        self.profileVC = profileVC
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
-        
-        
-        
     }
     
     private func setupTabs() {
-        let homeVC = ProfileViewController()
+        let homeVC = profileVC
         let settingsVC = SettingsViewController()
         let authorsVC = AuthorsViewController()
         
